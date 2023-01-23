@@ -57,7 +57,9 @@ relationship_type = ['friends', 'dating', 'married']
 relationship_cause = ['workplace', 'university', 'religious group', 
 'family members', 'hobbies', 'mutual friends']
 
-#TODO #create make_relationship fn
+#fn to make a relationship description
+def make_relationship():
+    return random.choice(relationship_type) + ' through their ' + random.choice(relationship_cause)
 
 ## AccessLog ##
 
@@ -67,7 +69,9 @@ access_types = ['liked', 'commented', 'disliked', 'reposted', 'embedded link for
 access_age = ['a new', 'an old']
 post_type = ['post', 'status', 'timeline update', 'story', 'artpiece', 'video', 'image']
 
-#TODO #create make_access fn
+#fn to make an accesslog message
+def make_accessmsg():
+    return random.choice(access_types) + ' ' + random.choice(access_age) + ' ' + random.choice(post_type) + ' from the user'
 
 
 

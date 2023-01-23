@@ -1,5 +1,4 @@
-#this import syntax is horrible but I'm too lazy to fix it
-import random_vals.random_vals
+import random_vals.random_vals as rv
 import pandas
 import random
 
@@ -7,13 +6,13 @@ import random
 
 #make lists to turn into columns; ID, Name, Nationality, CountryCode, Hobby
 id_list = [num for num in range(1, 200001)]
-name_list = [random_vals.random_vals.make_name() for ID in id_list]
+name_list = [rv.make_name() for ID in id_list]
 #gets nationalities+countrycode as a list of tuples to be split up
-natl_tuples = [random_vals.random_vals.get_rand_country() for ID in id_list]
+natl_tuples = [rv.get_rand_country() for ID in id_list]
 #split list of tuples into two lists
 natl_list = [tup[0] for tup in natl_tuples]
 ccode_list = [tup[1] for tup in natl_tuples]
-hobby_list = [random_vals.random_vals.get_rand_hobby() for ID in id_list]
+hobby_list = [rv.get_rand_hobby() for ID in id_list]
 
 mypage_df = pandas.DataFrame(columns=['ID', 'Name', 'Nationality', 'CountryCode', 'Hobby'])
 mypage_df['ID'] = id_list
