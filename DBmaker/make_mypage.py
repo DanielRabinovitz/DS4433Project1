@@ -3,10 +3,24 @@ import random_vals.random_vals
 import pandas
 import random
 
-mypage_df = pandas.DataFrame
-#mypage_df['ID'] = [num for num in range(1, 200001)]
+#DO NOT RERUN, this makes a random database configuration
 
+#make lists to turn into columns; ID, Name, Nationality, CountryCode, Hobby
+id_list = [num for num in range(1, 200001)]
+name_list = [random_vals.random_vals.make_name() for ID in id_list]
+#gets nationalities+countrycode as a list of tuples to be split up
+natl_tuples = [random_vals.random_vals.get_rand_country() for ID in id_list]
+#split list of tuples into two lists
+natl_list = [tup[0] for tup in natl_tuples]
+ccode_list = [tup[1] for tup in natl_tuples]
+hobby_list = [random_vals.random_vals.get_rand_hobby() for ID in id_list]
 
+mypage_df = pandas.DataFrame(columns=['ID', 'Name', 'Nationality', 'CountryCode', 'Hobby'])
+mypage_df['ID'] = id_list
+mypage_df['Name'] = name_list
+mypage_df['Nationality'] = natl_list
+mypage_df['CountryCode'] = ccode_list
+mypage_df['Hobby'] = hobby_list
 
-#x = random_vals.random_vals.first_names
+mypage_df.to_csv('MyPage.csv')
 
