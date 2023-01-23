@@ -1,0 +1,37 @@
+Relations:
+
+
+MyPage (200,000 records):
+
+Data on user
+
+ID (pk), int, sequentially 1<=x<=200,000
+Name, str, 10<=len<=20
+Nationality, str, 10<=len<=20, pick some number of them
+CountryCode, int, 1<=x<=50
+Hobby, str, 10<=len<=20
+
+
+
+Friends (20,000,000 records):
+
+Data on whether user X has user Y as a friend
+
+FriendRe1 (pk), int, seqeuntially 1<=x<=20,000,000, functions as the ID of a friend req
+PersonID (fk from MyPage), ID from MyPage, is person who sent friend req
+MyFriend (fk from MyPage), ID from MyPage, is person who recieved friend req
+DateOfFriendship, do whatever you want but recommended was random int 1<=x<=1,000,000
+Desc, str, 20<=len<=50, tagline explaining how they know each other (e.g. college friends, parents, etc.)
+
+
+
+AccessLog (10,000,000 records):
+
+Data on whether user X accessed user Y's page
+
+AccessID (pk), int, sequentially 1<=x<=10,000,000
+ByWho (fk from MyPage), ID from MyPage, is user X
+WhatPage (fk from MyPage), ID from MyPage, is user Y
+TypeOfAccess, str, 20<=len<=50, notes all activity such as view/like/comment/etc
+AccessTime, int, random int 1<=x<=1,000,000
+
