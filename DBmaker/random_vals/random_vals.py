@@ -65,7 +65,7 @@ def make_relationship():
 
 #for TypeOfAccess
 #to be structured as 'access_types[x] access_age[y] post_type[z] from the user'
-access_types = ['liked', 'commented', 'disliked', 'reposted', 'embedded link for', 'viewed']
+access_types = ['liked a', 'commented on', 'disliked', 'reposted', 'embedded link for', 'viewed a']
 access_age = ['a new', 'an old']
 post_type = ['post', 'status', 'timeline update', 'story', 'artpiece', 'video', 'image']
 
