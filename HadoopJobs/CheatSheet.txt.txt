@@ -1,0 +1,20 @@
+Jobs
+
+1) Find all MyPage rows under one nationality
+2) Find the 8 pages with the most visitors
+3) Count how many users there are per nationality
+4) For each user X, count how many users Y list user X as a friend
+5) For each user, how many total times have they access a page
+	and how many unique pages did they access
+6) List all users X who have a friend Y for which X has not accessed
+	Y's page ever
+7) Find all users who, after X days of creating their page have no
+	appearances in the accesslog
+8) List all users who have more friends than the average number
+	of friends
+		-Ask if "having more friends" means sent more or recieved 
+		 more friend requests
+ 
+
+Extra notes:
+A user X has user Y as a friend if ???
