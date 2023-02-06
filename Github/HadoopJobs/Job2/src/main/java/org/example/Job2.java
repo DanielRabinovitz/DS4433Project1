@@ -1,10 +1,13 @@
 package org.example;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Array;
 import java.util.*;
 
+import javafx.util.Pair;
+import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -48,15 +51,25 @@ public class Job2{
     public static class LogReducer
     extends Reducer<Text, IntWritable, Text, IntWritable>{
 
-        //make a tree map (hashmap sorted by
-        private HashMap<Text, IntWritable> viewCounts = new HashMap<>();
+        //array of 8 values, all set below 0
+        private ArrayList<Pair<String,Integer>> top8;
 
-        //fn to increment by 1 for the view count of a page
-        private void updateCounts(Text pageID){
-            //.get() on an IntWriteable gets the int stored inside of it
-            int count = viewCounts.get(pageID).get();
-            //update the page count with a new IntWritable
-            viewCounts.put(pageID, new IntWritable(count++));
+        //make comparator class for sorting list
+        class PairComparator implements Comparator<Pair<String,Integer>>{
+            @Override
+            public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2) {
+                //compare only reads the sign from the subtraction, negative, 0, or positive
+                return o1.getValue()-o2.getValue();
+            }
+        }
+        //Adds a new pair to the list if it's in the top 8
+        private void updateTop(Pair<String,Integer> pair){
+
+            top8.add(pair);
+            top8.sort(new PairComparator().reversed());
+
+            if(top8.size()>8){top8 = new ArrayList<>(top8.subList(0,7));}
+
         }
 
         //counts how many items there are under each key
@@ -72,11 +85,12 @@ public class Job2{
             for (IntWritable val : vals) {
                 count += val.get();
             }
-            //put the count in hadoop readable form and send to hadoop
-            result.set(count);
-            context.write(new_key, result);
-        }
 
+            //put the count in hadoop readable form and send to hadoop
+            context.write(new_key, new IntWritable(count));
+
+            //@TODO write cleanup
+        }
     }
 
     //Job (map only) to get the records for each of the top 8 items
@@ -84,16 +98,19 @@ public class Job2{
     public static void main(String[] args) throws Exception {
 
         String[] input = new String[2];
+        //get data from here
         input[0] = "C:\\Users\\owner\\Documents\\Classes\\DS4433\\DS4433projects\\project1\\Proj1CSVs\\AccessLog.csv";
-        //delete output folder between tests
+        //output mapreduce job to here
         input[1] = "C:\\Users\\owner\\Documents\\Classes\\DS4433\\DS4433projects\\project1\\Proj1Outputs\\job2output";
+        //program throws an error if the output folder exists, so delete the folder
+        FileUtils.deleteDirectory(new File(input[1]));
 
         Configuration conf = new Configuration();
         Job job2 = Job.getInstance(conf, "Find top 8 pages");
         //sets the things to run for map and reduce
         job2.setJarByClass(Job2.class);
         job2.setMapperClass(LogMapper.class);
-        job2.setCombinerClass(LogReducer.class);
+        job2.setReducerClass(LogReducer.class);
         job2.setOutputKeyClass(Text.class);
         job2.setOutputValueClass(IntWritable.class);
         FileInputFormat.addInputPath(job2, new Path(input[0]));
